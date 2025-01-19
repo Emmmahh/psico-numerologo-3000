@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PsicoNumerólogo 3000</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e2f;
+      color: #ffffff;
+      text-align: center;
+      padding: 50px;
+      margin: 0;
+      background-image: url('imagen/gato p.jpg'); /* Cambié la ruta a 'gato p.jpg' */
+      background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+      background-position: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+
+    /* Estilo para la imagen del título */
+    #logo {
+      width: 150px; /* Ajusta el tamaño de la imagen */
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      margin: 15px 0;
+    }
+
+    #result {
+      font-size: 24px;
+      color: #ffcc00;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .loading {
+      font-size: 20px;
+      color: #00d4ff;
+      margin: 20px 0;
+    }
+
+    button, input {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #0078ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover, input:hover {
+      background-color: #005fcc;
+    }
+
+    input {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      width: 60px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Imagen en el contenido -->
+  <img id="logo" src="imagen/logo.jpg" alt="PsicoNumerólogo 3000"> <!-- Cambié la ruta a 'logo.jpg' -->
+
+  <h1>PsicoNumerólogo 3000</h1>
+  <p>Piensa en un número del 1 al 10, pero no lo digas en voz alta.</p>
+  <p>Ahora, por favor, escribe el número que pensaste en el campo de abajo y presiona "Enviar".</p>
+
+  <input type="number" id="numberInput" min="1" max="10" placeholder="1-10" />
+  <button id="submitButton">Enviar</button>
+  
+  <div id="loadingMessages"></div>
+  <p id="result"></p>
+
+  <script>
+    const submitButton = document.getElementById('submitButton');
+    const numberInput = document.getElementById('numberInput');
+    const loadingMessages = document.getElementById('loadingMessages');
+    const result = document.getElementById('result');
+
+    // Mensajes personalizados con el nombre "Shirley"
+    const messages = [
+      "Sintonizando las ondas mentales de Shirley...",
+      "Recopilando datos de los pensamientos de Shirley...",
+      "Leyendo las ondas mentales de Shirley...",
+      "Conectando con el subconsciente de Shirley...",
+      "Predicción en proceso... casi listo, Shirley."
+    ];
+
+    submitButton.addEventListener('click', () => {
+      const number = numberInput.value;
+      if (number >= 1 && number <= 10) {
+        submitButton.style.display = 'none'; // Esconde el botón
+        numberInput.disabled = true; // Desactiva el campo de entrada
+        loadingMessages.innerHTML = ''; // Limpia los mensajes previos
+        result.style.display = 'none'; // Esconde el resultado previo
+
+        let i = 0;
+
+        // Mostrar mensajes de análisis uno por uno
+        const interval = setInterval(() => {
+          if (i < messages.length) {
+            const p = document.createElement('p');
+            p.textContent = messages[i];
+            p.className = 'loading';
+            loadingMessages.appendChild(p);
+            i++;
+          } else {
+            clearInterval(interval);
+            showResult(number); // Mostrar el resultado final
+          }
+        }, 1500); // Cada mensaje aparece cada 1.5 segundos
+      } else {
+        alert("Por favor, ingresa un número válido del 1 al 10.");
+      }
+    });
+
+    // Función para mostrar el resultado final
+    function showResult(number) {
+      loadingMessages.innerHTML = ''; // Limpia los mensajes
+      result.textContent = `Estoy seguro de que pensaste en el número: ${number}`;
+      result.style.display = 'block'; // Muestra el resultado
+      submitButton.style.display = 'block'; // Vuelve a mostrar el botón
+      submitButton.textContent = 'Intentar de nuevo'; // Cambia el texto del botón
+      numberInput.disabled = false; // Vuelve a habilitar el campo de entrada
+      numberInput.value = ''; // Limpia el campo de entrada
+    }
+  </script>
+</body>
+</html>
