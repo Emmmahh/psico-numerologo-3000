@@ -67,6 +67,12 @@
       text-align: center;
       width: 60px;
     }
+
+    #nameInput {
+      font-size: 18px;
+      padding: 10px;
+      width: 200px;
+    }
   </style>
 </head>
 <body>
@@ -74,29 +80,54 @@
   <img id="logo" src="imagen/logo.jpg" alt="PsicoNumerólogo 3000"> <!-- Cambié la ruta a 'logo.jpg' -->
 
   <h1>PsicoNumerólogo 3000</h1>
-  <p>Piensa en un número del 1 al 10, pero no lo digas en voz alta.</p>
-  <p>Ahora, por favor, escribe el número que pensaste en el campo de abajo y presiona "Enviar".</p>
+  <p>Por favor, ingresa tu nombre:</p>
+  <input type="text" id="nameInput" placeholder="Tu nombre" />
+  <button id="startButton">Comenzar</button>
 
-  <input type="number" id="numberInput" min="1" max="10" placeholder="1-10" />
-  <button id="submitButton">Enviar</button>
+  <div id="nameSection" style="display: none;">
+    <p>Piensa en un número del 1 al 10, pero no lo digas en voz alta.</p>
+    <p>Ahora, por favor, escribe el número que pensaste en el campo de abajo y presiona "Enviar".</p>
   
-  <div id="loadingMessages"></div>
-  <p id="result"></p>
+    <input type="number" id="numberInput" min="1" max="10" placeholder="1-10" />
+    <button id="submitButton">Enviar</button>
+  
+    <div id="loadingMessages"></div>
+    <p id="result"></p>
+  </div>
 
   <script>
+    const startButton = document.getElementById('startButton');
     const submitButton = document.getElementById('submitButton');
     const numberInput = document.getElementById('numberInput');
     const loadingMessages = document.getElementById('loadingMessages');
     const result = document.getElementById('result');
+    const nameInput = document.getElementById('nameInput');
+    const nameSection = document.getElementById('nameSection');
 
-    // Mensajes personalizados con el nombre "Shirley"
+    let userName = ''; // Variable para almacenar el nombre del usuario
+
+    // Mensajes personalizados con el nombre del usuario
     const messages = [
-      "Sintonizando las ondas mentales de Shirley...",
-      "Recopilando datos de los pensamientos de Shirley...",
-      "Leyendo las ondas mentales de Shirley...",
-      "Conectando con el subconsciente de Shirley...",
-      "Predicción en proceso... casi listo, Shirley."
+      "Sintonizando las ondas mentales de {name}...",
+      "Recopilando datos de los pensamientos de {name}...",
+      "Leyendo las ondas mentales de {name}...",
+      "Conectando con el subconsciente de {name}...",
+      "Predicción en proceso... casi listo, {name}."
     ];
+
+    // Al hacer clic en "Comenzar", se guarda el nombre y se muestra la siguiente sección
+    startButton.addEventListener('click', () => {
+      userName = nameInput.value.trim();
+      if (userName === '') {
+        alert("Por favor, ingresa tu nombre.");
+      } else {
+        document.querySelector('h1').style.display = 'none';  // Esconde el título
+        document.querySelector('p').style.display = 'none';   // Esconde la instrucción
+        nameInput.style.display = 'none'; // Esconde el input del nombre
+        startButton.style.display = 'none'; // Esconde el botón
+        nameSection.style.display = 'block'; // Muestra la sección para el número
+      }
+    });
 
     submitButton.addEventListener('click', () => {
       const number = numberInput.value;
@@ -108,11 +139,11 @@
 
         let i = 0;
 
-        // Mostrar mensajes de análisis uno por uno
+        // Mostrar mensajes de análisis uno por uno, reemplazando {name} por el nombre del usuario
         const interval = setInterval(() => {
           if (i < messages.length) {
             const p = document.createElement('p');
-            p.textContent = messages[i];
+            p.textContent = messages[i].replace("{name}", userName); // Reemplazar {name} por el nombre del usuario
             p.className = 'loading';
             loadingMessages.appendChild(p);
             i++;
